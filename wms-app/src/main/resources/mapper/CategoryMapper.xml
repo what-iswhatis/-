@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rocky.dao.CategoryDao">
+
+    <insert id="insert">
+        insert into 208_category (name,img,parentId,seq)
+        values (#{name},#{img},#{parentId},#{seq})
+    </insert>
+    <update id="update">
+        update 208_category
+        <set>
+            <if test="name!= null">
+                name=#{name},
+            </if>
+            <if test="img!= null">
+                img=#{img},
+            </if>
+            <if test="parentId!= null">
+                parentId=#{parentId},
+            </if>
+            <if test="seq!= null">
+                seq=#{seq},
+            </if>
+            <if test="lastUpdateBy!= null">
+                lastUpdateBy=#{lastUpdateBy},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delete">
+        update  208_category set status = 0  where id = #{id}
+    </delete>
+    <select id="select" resultType="com.rocky.model.Category">
+        select id, name, img, seq, parentId, status, lastUpdateBy, lastUpdateTime from 208_category
+        <where>
+            <if test="id!= null">
+                and id = #{id}
+            </if>
+            <if test="ids != null">
+                and id in
+                <foreach collection="ids" item="a" open="(" close=")" separator=",">
+                    #{a}
+                </foreach>
+            </if>
+            <if test="name!= null">
+                and name like '%${name}%'
+            </if>
+            <if test="status!= null">
+                and status = #{status}
+            </if>
+            <if test="parentId!= null">
+                and parentId = #{parentId}
+            </if>
+            <if test="lastUpdateBy!= null">
+                and lastUpdateBy = #{lastUpdateBy}
+            </if>
+        </where>
+        order by seq
+    </select>
+</mapper>

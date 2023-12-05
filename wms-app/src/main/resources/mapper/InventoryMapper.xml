@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rocky.dao.InventoryDao">
+
+    <select id="select" resultType="com.rocky.model.Inventory">
+        select * from 208_inventory
+        <where>
+            <if test="productId!=null">
+                and productId=#{productId}
+            </if>
+        </where>
+
+    </select>
+    <insert id="insert">
+        insert 208_inventory(productId,productName, qty,shelfId,productionDate,expirationDay,expirationDate)
+        values (#{productId},#{productName},#{qty},#{shelfId},#{productionDate},#{expirationDay},#{expirationDate})
+    </insert>
+    <insert id="update">
+        update 208_inventory set qty = qty + #{optionQty} where productId = #{productId}
+    </insert>
+</mapper>

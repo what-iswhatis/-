@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rocky.dao.OoMasterDao">
+
+    <select id="select" resultType="com.rocky.model.OoMaster">
+        select * from 208_oo_master
+        <where>
+            <if test="id!=null">
+                and id like concat('%',#{id},'%')
+            </if>
+            <if test="ids != null">
+                and id in
+                <foreach collection="ids" item="a" open="(" close=")" separator=",">
+                    #{a}
+                </foreach>
+            </if>
+        </where>
+        order by id desc
+    </select>
+    <insert id="insert">
+        insert 208_oo_master(id, poId, ooDate, brief,operator)
+        values (#{id},#{poId},#{ooDate},#{brief},#{operator})
+    </insert>
+</mapper>

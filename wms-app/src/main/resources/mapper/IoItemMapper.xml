@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rocky.dao.IoItemDao">
+
+    <select id="select" resultType="com.rocky.model.IoItem">
+        select * from 208_io_item
+        <where>
+            <if test="ioId!=null">
+                and ioId=#{ioId}
+            </if>
+        </where>
+        order by id
+    </select>
+    <insert id="insert">
+        insert 208_io_item(ioId, productId, productName, qty, brief, poItemId,shelfId,productionDate,expirationDay,expirationDate,lastUpdateBy)
+        values
+        <foreach collection="items" item="item" separator="," open="" close="">
+            (#{item.ioId},#{item.productId},#{item.productName},#{item.qty},#{item.brief},#{item.poItemId},#{item.shelfId},#{item.productionDate},#{item.expirationDay},#{item.expirationDate},#{item.lastUpdateBy})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rocky.dao.ProductDao">
+
+    <insert id="insert">
+        insert into 208_product (`name`, subName, categoryId,
+        img, `status`, price,
+        brief, seq, tags)
+        values (#{name,jdbcType=VARCHAR}, #{subName,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER},
+        #{img,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL},
+        #{brief,jdbcType=LONGVARCHAR}, #{seq,jdbcType=INTEGER}, #{tags,jdbcType=VARCHAR}
+        )
+    </insert>
+    <update id="update">
+        update 208_product
+        <set>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="subName != null">
+                subName = #{subName,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryId != null">
+                categoryId = #{categoryId,jdbcType=INTEGER},
+            </if>
+            <if test="img != null">
+                img = #{img,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="brief != null">
+                brief = #{brief,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="seq != null">
+                seq = #{seq,jdbcType=INTEGER},
+            </if>
+            <if test="tags != null">
+                tags = #{tags,jdbcType=VARCHAR},
+            </if>
+
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delete">
+        update  208_product set status = 0  where id = #{id}
+    </delete>
+    <select id="select" resultType="com.rocky.model.Product">
+        select id, `name`, subName, categoryId, img, `status`, price, brief, seq, tags, lastUpdateBy,
+        lastUpdateTime from 208_product
+        <where>
+            status in (1,2)
+            <if test="id!= null">
+                and id = #{id}
+            </if>
+            <if test="ids != null">
+                and id in
+                <foreach collection="ids" item="a" open="(" close=")" separator=",">
+                    #{a}
+                </foreach>
+            </if>
+            <if test="name!= null">
+                and name like '%${name}%'
+            </if>
+            <if test="subName!= null">
+                and subName like '%${subName}%'
+            </if>
+            <if test="status!= null">
+                and status = #{status}
+            </if>
+            <if test="categoryId!= null">
+                and categoryId = #{categoryId}
+            </if>
+
+        </where>
+        order by seq
+    </select>
+</mapper>

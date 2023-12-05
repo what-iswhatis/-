@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rocky.dao.UserDao">
+    <insert id="addUser">
+        INSERT INTO 208_user (tel, password, nickName)
+        VALUES (#{tel}, #{password}, #{nickName})
+    </insert>
+    <select id="select" resultType="com.rocky.model.User">
+        select * from 208_user where tel=#{tel} limit 1
+    </select>
+
+    <!-- 登录 -->
+    <select id="login" resultType="com.rocky.model.User">
+        select id,tel,password,nickName,createTime from 208_user where tel=#{tel} and password=#{password} limit 1
+    </select>
+</mapper>

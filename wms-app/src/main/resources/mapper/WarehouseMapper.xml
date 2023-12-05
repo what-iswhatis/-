@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rocky.dao.WarehouseDao">
+
+    <insert id="insert">
+        insert into 208_warehouse (`name`, brief, parentId,
+        seq, `status`)
+        values (#{name,jdbcType=VARCHAR}, #{brief,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER},
+        #{seq,jdbcType=INTEGER}, #{status,jdbcType=INTEGER})
+    </insert>
+    <update id="update">
+        update 208_warehouse
+        <set>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="brief != null">
+                brief = #{brief,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                parentId = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="seq != null">
+                seq = #{seq,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=INTEGER},
+            </if>
+
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <delete id="delete">
+        update  208_warehouse set status = 0  where id = #{id}
+    </delete>
+    <select id="select" resultType="com.rocky.model.Warehouse">
+        select id, `name`, brief, parentId, seq, `status`, lastUpdateBy, lastUpdateTime from 208_warehouse
+        <where>
+            <if test="id!= null">
+                and id = #{id}
+            </if>
+            <if test="ids != null">
+                and id in
+                <foreach collection="ids" item="a" open="(" close=")" separator=",">
+                    #{a}
+                </foreach>
+            </if>
+            <if test="name!= null">
+                and name like '%${name}%'
+            </if>
+            <if test="status!= null">
+                and status = #{status}
+            </if>
+            <if test="parentId!= null">
+                and parentId = #{parentId}
+            </if>
+
+        </where>
+        order by seq
+    </select>
+
+</mapper>
